@@ -21,14 +21,32 @@ model User {
 }
 
 model Customer {
-  id               BigInt         @id @default(autoincrement())
+  id               BigInt         @id
+  code             String         @unique
+  code_num         Int            @unique
   name             String
   corporate_number String
   status           CustomerStatus
+  country          String?
   created_at       DateTime       @default(now())
   updated_at       DateTime       @updatedAt
 
+  invoices Invoice[]
+
   @@map("customer")
+}
+
+model Invoice {
+  id          String    @id @default(cuid())
+  customer_id BigInt
+  start_date  DateTime
+  end_date    DateTime?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+
+  customer Customer @relation(fields: [customer_id], references: [id])
+
+  @@map("invoice")
 }
 
 enum CustomerStatus {
