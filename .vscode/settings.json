@@ -1,0 +1,13 @@
+{
+    "editor.formatOnSave": true,
+    "[vue][typescript][javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "cSpell.words": [
+        "nuxt",
+        "tseslint",
+        "vuetify"
+    ],
+    "eslint.experimental.useFlatConfig": true
+}
+

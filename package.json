@@ -1,0 +1,36 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "format:check": "prettier **/*.{js,ts,vue,json} '!package-lock.json' --ignore-path .gitignore --check",
+    "format:fix": "prettier **/*.{js,ts,vue,json} '!package-lock.json' --ignore-path .gitignore --write",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "@prisma/client": "5.15.0"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^0.3.13",
+    "eslint": "^9.4.0",
+    "nuxt": "^3.11.2",
+    "prettier": "^3.3.1",
+    "prisma": "^5.15.0",
+    "sass": "^1.77.4",
+    "tsx": "^4.14.0",
+    "typescript": "^5.4.5",
+    "vite-plugin-vuetify": "^2.0.3",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2",
+    "vue-tsc": "^2.0.19",
+    "vuetify": "^3.6.8",
+    "zod": "^3.23.8"
+  }
+}
