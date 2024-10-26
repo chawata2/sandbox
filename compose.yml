@@ -12,6 +12,8 @@ services:
       1000:1000
     environment:
       TZ: "Asia/Tokyo"
+    env_file:
+      - .env
     depends_on:
       - mysql
   mysql:
