@@ -1,0 +1,12 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    volumes:
+      - ./app:/app
+    command: yarn dev
+    ports:
+      - "3000:3000"
+    user: 
+      1000:1000
