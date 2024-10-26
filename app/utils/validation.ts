@@ -1,4 +1,4 @@
-import type { ValidationIssue } from "~/core/errors";
+import type { ValidationIssue } from "~/server/core/errors";
 
 /**
  * ValidationIssueオブジェクトの型ガード。

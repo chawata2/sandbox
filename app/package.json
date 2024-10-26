@@ -32,5 +32,8 @@
     "vue-tsc": "^2.0.19",
     "vuetify": "^3.6.8",
     "zod": "^3.23.8"
+  },
+  "prisma": {
+    "schema": "server/prisma/schema.prisma"
   }
 }
