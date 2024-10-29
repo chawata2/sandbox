@@ -3,7 +3,9 @@ import { createCustomerUseCase } from "~/server/core/usecase/createCustomerUseCa
 
 const createCustomerSchema = z.object({
   name: z.string(),
-  corporateNumber: z.string(),
+  corporate_number: z.string(),
+  country: z.string().nullable(),
+  invoices: z.array(z.object({ id: z.string(), start_date: z.date(), end_date: z.date().nullable() })),
 });
 
 export default defineEventHandler(async (event) => {
