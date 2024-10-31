@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { createCustomerUseCase } from "~/server/core/usecase/createCustomerUseCase";
+import { createValidationError } from "~/server/utils/error";
 
 const createCustomerSchema = z.object({
   name: z.string(),
@@ -11,14 +12,10 @@ const createCustomerSchema = z.object({
 export default defineEventHandler(async (event) => {
   const result = await readValidatedBody(event, (body) => createCustomerSchema.safeParse(body));
 
+  console.log("this");
   if (result.success === false) {
-    return createError({
-      statusCode: 422,
-      message: "バリデーションに失敗しました。",
-      data: {
-        errors: result.error.format(),
-      },
-    });
+    console.log(result.error.errors);
+    throw createValidationError(result.error.errors.map((error) => ({ path: error.path, reason: error.message })));
   }
 
   return createCustomerUseCase(result.data);

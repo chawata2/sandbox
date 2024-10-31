@@ -1,5 +1,6 @@
 import { z } from "zod";
-import type { CustomerStatus } from "@prisma/client";
+import { CustomerStatus } from "@prisma/client";
+import { createValidationError } from "~/server/utils/error";
 
 export type Customer = {
   readonly id: bigint;
@@ -26,6 +27,24 @@ const codeNumSchema = z
   .min(1, "取引先コードは1以上の整数でのみ生成可能です。")
   .max(999999, "取引先コードは999999以下の整数でのみ生成可能です。");
 
+const customerSchema = z.object({
+  id: z.bigint(),
+  code: z.string(),
+  code_num: codeNumSchema,
+  name: z.string(),
+  corporate_number: corporateNumberSchema,
+  status: z.nativeEnum(CustomerStatus),
+  country: z.string().nullable(),
+  invoices: z.array(
+    z.object({
+      id: z.string(),
+      customer_id: z.bigint(),
+      start_date: z.date(),
+      end_date: z.date().nullable(),
+    }),
+  ),
+});
+
 /**
  * 取引先のコードを生成する関数。
  * 1から999999までの整数を受け取り、取引先コードを生成する。
@@ -48,16 +67,26 @@ export type CreateCustomerPayload = Omit<Customer, "code" | "status" | "invoices
  * @returns 生成された取引先
  */
 export const createCustomer = (payload: CreateCustomerPayload): Customer => {
-  return {
+  const customer: Customer = {
     id: payload.id,
     code: createCustomerCode(payload.code_num),
     code_num: payload.code_num,
     name: payload.name,
-    corporate_number: corporateNumberSchema.parse(payload.corporate_number),
+    corporate_number: payload.corporate_number,
     status: "ACTIVE",
     country: payload.country,
     invoices: payload.invoices.map((invoice) => ({ ...invoice, customer_id: payload.id })),
   };
+
+  const validatedCustomer = customerSchema.safeParse(customer);
+
+  if (!validatedCustomer.success) {
+    throw createValidationError(
+      validatedCustomer.error.errors.map((error) => ({ path: error.path, reason: error.message })),
+    );
+  }
+
+  return validatedCustomer.data;
 };
 
 export type UpdateCustomerPayload = { readonly currentCustomer: Customer } & Partial<
@@ -72,7 +101,7 @@ export type UpdateCustomerPayload = { readonly currentCustomer: Customer } & Par
  */
 export const updateCustomer = (payload: UpdateCustomerPayload): Customer => {
   if (payload.currentCustomer.status === "INACTIVE") {
-    throw new Error("アクティブでない取引先は更新できません。");
+    throw createError({ statusCode: 400, statusMessage: "Bad Request", message: "無効な取引先です。" });
   }
 
   const newCorporateNumber = payload.corporate_number

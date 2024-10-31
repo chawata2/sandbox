@@ -10,11 +10,14 @@ type CreateCustomerUseCasePayload = Omit<CreateCustomerPayload, "id" | "code" | 
  * @returns
  */
 export const createCustomerUseCase = async (payload: CreateCustomerUseCasePayload) => {
-  const currentMaxCodeNum = await prisma.customer.findFirstOrThrow({ orderBy: { code_num: "desc" } });
-  const currentMaxId = await prisma.customer.findFirstOrThrow({ orderBy: { id: "desc" } });
+  const currentMaxCodeNum =
+    (await prisma.customer.findFirst({ select: { code_num: true }, orderBy: { code_num: "desc" } }))?.code_num ?? 0;
 
-  const nextCodeNum = currentMaxCodeNum.code_num + 1;
-  const nextId = currentMaxId.id + 1n;
+  const currentMaxId =
+    (await prisma.customer.findFirst({ select: { id: true }, orderBy: { id: "desc" } }))?.id ?? BigInt(0);
+
+  const nextCodeNum = currentMaxCodeNum + 1;
+  const nextId = currentMaxId + BigInt(1);
 
   const newCustomer = createCustomer({
     id: nextId,

@@ -1,31 +1,22 @@
-export class BaseError extends Error {
-  constructor(
-    readonly errorCode: number,
-    message?: string,
-  ) {
-    super(message);
-  }
-}
-
-export type ValidationIssue = {
+export type InvalidParameter = {
   path: (string | number)[];
-  message: string;
+  reason: string;
 };
 
 /**
  * バリデーションエラーで使用するエラー。
  */
-export class ValidationError extends BaseError {
-  constructor(readonly issues: ValidationIssue[]) {
-    super(422, "Validation error.");
+export class ValidationError extends Error {
+  constructor(readonly invalidParams: InvalidParameter[]) {
+    super("Validation error.");
   }
 }
 
 /**
  * Get系のユースケースでデータが見つからない場合に返すエラー。
  */
-export class NotFoundError extends BaseError {
+export class NotFoundError extends Error {
   constructor() {
-    super(404, "Not Found.");
+    super("Not Found.");
   }
 }
