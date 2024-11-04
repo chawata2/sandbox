@@ -35,7 +35,7 @@ const onSubmit = handleSubmit(async (values) => {
         </v-row>
         <v-row>
           <v-col>
-            <ViewsFormCustomerInvoice :errors="errors" />
+            <ViewsFormCustomerInvoice />
           </v-col>
         </v-row>
       </v-card-text>

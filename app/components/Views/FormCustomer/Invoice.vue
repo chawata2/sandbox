@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { useFieldArray } from "vee-validate";
-
-defineProps<{ errors: ReturnType<typeof useCustomerForm>["errors"]["value"] }>();
+import { useFieldArray, useFormErrors } from "vee-validate";
 
 const { remove, push, fields } = useFieldArray<{ start_date: string | null; end_date: string | null }>("invoices");
+const errors = useFormErrors();
 </script>
 <template>
   <v-table>
