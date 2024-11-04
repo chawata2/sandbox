@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "^0.3.13",
+    "@vee-validate/zod": "^4.14.6",
     "eslint": "^9.4.0",
     "nuxt": "^3.11.2",
     "prettier": "^3.3.1",
@@ -26,6 +27,7 @@
     "sass": "^1.77.4",
     "tsx": "^4.14.0",
     "typescript": "^5.4.5",
+    "vee-validate": "^4.14.6",
     "vite-plugin-vuetify": "^2.0.3",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",

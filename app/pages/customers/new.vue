@@ -1,17 +1,10 @@
 <script setup lang="ts">
-import type { CustomerForm } from "~/components/Views/CustomerForm.vue";
+import type { CustomerForm } from "~/components/Views/FormCustomer/index.vue";
 
 const form = ref<CustomerForm>({
   name: "",
   corporate_number: "",
-  status: "ACTIVE",
-  country: "",
-  invoices: [
-    {
-      start_date: null,
-      end_date: null,
-    },
-  ],
+  invoices: [],
 });
 
 const errorMessage = ref<string | null>(null);
@@ -24,6 +17,9 @@ const { data, error, execute } = useFetch("/api/customers", {
 });
 
 const onSubmit = async () => {
+  console.log("onSubmit");
+  console.log(form.value);
+
   errorMessage.value = null;
 
   await execute();
@@ -49,6 +45,6 @@ const onSubmit = async () => {
 <template>
   <div>
     <v-alert v-if="errorMessage" type="error" class="text-pre-wrap">{{ errorMessage }}</v-alert>
-    <ViewsCustomerForm v-model="form" @submit="onSubmit" />
+    <ViewsFormCustomer v-model="form" @submit="onSubmit" />
   </div>
 </template>
