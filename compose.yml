@@ -16,6 +16,8 @@ services:
       - .env
     depends_on:
       - mysql
+    dns:
+      - 8.8.8.8
   mysql:
     image: mysql:8.0
     environment:
