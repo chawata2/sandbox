@@ -1,4 +1,5 @@
 import type { InvalidParameter } from "~/server/core/errors";
+import { createError } from "h3";
 
 export const createValidationError = (invalidParams: InvalidParameter[]) => {
   return createError({
