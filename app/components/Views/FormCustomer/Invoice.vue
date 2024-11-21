@@ -1,8 +1,17 @@
 <script setup lang="ts">
-import { useFieldArray, useFormErrors } from "vee-validate";
+import { useField, useFieldArray } from "vee-validate";
 
-const { remove, push, fields } = useFieldArray<{ start_date: string | null; end_date: string | null }>("invoices");
-const errors = useFormErrors();
+const { value } = useField<{ id: string; start_date: string | null; end_date: string | null }[]>("invoices");
+
+const { push, remove } = useFieldArray<{ id: string; start_date: string | null; end_date: string | null }>("invoices");
+
+const add = () => {
+  push({
+    id: crypto.randomUUID(),
+    start_date: null,
+    end_date: null,
+  });
+};
 </script>
 <template>
   <v-table>
@@ -13,22 +22,12 @@ const errors = useFormErrors();
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(field, idx) in fields" :key="field.key">
+      <tr v-for="(field, idx) in value" :key="field.id">
         <td>
-          <v-text-field
-            v-model="field.value.start_date"
-            type="date"
-            label="開始日"
-            :error-messages="errors[`invoices[${idx}].start_date` as any]"
-          />
+          <SharedTextField :name="`invoices[${idx}].start_date`" />
         </td>
         <td>
-          <v-text-field
-            v-model="field.value.end_date"
-            type="date"
-            label="終了日"
-            :error-messages="errors[`invoices[${idx}].end_date` as any]"
-          />
+          <SharedTextField :name="`invoices[${idx}].end_date`" />
         </td>
         <td>
           <v-btn @click="remove(idx)">削除</v-btn>
@@ -36,5 +35,5 @@ const errors = useFormErrors();
       </tr>
     </tbody>
   </v-table>
-  <v-btn @click="push({ start_date: null, end_date: null })">追加</v-btn>
+  <v-btn @click="add">追加</v-btn>
 </template>
